@@ -1,0 +1,134 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "API para geração de tokens para realizar autenticação nas APIs da Mongeral Aegon.",
+    "version": "1.0.0",
+    "title": "API.JWT",
+    "termsOfService": "http://swagger.io/terms/"
+  },
+  "paths": {
+    "/token": {
+      "post": {
+        "summary": "Realiza a geração do token.",
+        "tags": [
+          "Connect"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/access_token"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Requisição inválida.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/erros"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Recurso não encontrado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/erros"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Ocorreu um erro não identificado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/erros"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Gateway Timeout."
+          },
+          "504": {
+            "description": "Backend Timeout."
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "client_id",
+                  "client_secret",
+                  "scope",
+                  "grant_type"
+                ],
+                "properties": {
+                  "client_id": {
+                    "type": "string",
+                    "description": "Client id de identificação do cliente."
+                  },
+                  "client_secret": {
+                    "type": "string",
+                    "description": "Client secret do cliente."
+                  },
+                  "scope": {
+                    "type": "string",
+                    "description": "Escopo a ser utilizado."
+                  },
+                  "grant_type": {
+                    "type": "string",
+                    "description": "Tipo de acesso a ser solicitado."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+	{
+	  "url": "https://apis-sbx.mag.com.br/connect",
+		"description": "Sandbox"
+	},
+	{
+	  "url": "https://apis-stg.mag.com.br/connect",
+	  "description": "Staging"
+	},
+	{
+	  "url": "https://apis.mag.com.br/connect",
+	  "description": "Produção"
+	}
+  ],
+  "components": {
+    "schemas": {
+      "access_token": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string"
+          }
+        }
+      },
+      "erros": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
